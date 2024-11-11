@@ -10,6 +10,8 @@ use std::cmp::min;
 use std::fmt;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
+use serde::{Deserialize, Serialize};
+
 /// Integers modulo `N` with overloaded modular arithmetic operation (`+`, `-`, `*`, unary `-`), and
 /// several other utility methods. Note that when `N` is `0`, normal integer arithmetic is used.
 ///
@@ -24,7 +26,7 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 /// indeed reduced already.
 ///
 /// The behavior when `N = 1` is not defined.
-#[derive(Clone, Copy, Hash, PartialEq, Eq)]
+#[derive(Clone, Copy, Hash, PartialEq, Eq, Deserialize, Serialize)]
 #[repr(transparent)]
 pub struct IntMod<const N: u64> {
     a: u64,

@@ -28,6 +28,7 @@ use crate::math::simd_utils::*;
 use crate::pir::pir::{PIRRecordBytes, Stats, PIR};
 
 use rayon::prelude::*;
+use serde::{Deserialize, Serialize};
 
 pub struct RespireImpl<
     const Q1: u64,
@@ -496,6 +497,7 @@ respire_impl!(PIR, {
         <Self as Respire>::VecEncodingSecret,
         <Self as Respire>::VecEncodingSecretQ2Small,
     );
+
     type PublicParams = (
         (
             Vec<<Self as Respire>::AutoParamsShort>,
@@ -507,6 +509,7 @@ respire_impl!(PIR, {
     );
 
     type Query = Vec<<Self as Respire>::QueryOne>;
+
     type Response = Vec<<Self as Respire>::AnswerOneCompressed>;
 
     /// We structure the database as `[2] x [D1 / S] x [DIM2_SIZE] x [DIM1_SIZE] x [S]` for optimal first dimension
@@ -877,16 +880,19 @@ respire_impl!(Respire, {
     type Record = IntModCyclo<D3, P>;
     type RecordPackedSmall = Matrix<N_VEC, 1, IntModCyclo<D2, P>>;
     type RecordPacked = IntModCyclo<D1, P>;
+
     type QueryOne = (
         <Self as Respire>::RLWEEncodingCompressed,
         <Self as Respire>::RLWEEncodingCompressed,
     );
+
     type QueryOneExpanded = (
         Vec<<Self as Respire>::RLWEEncoding>, // first dim
         Vec<<Self as Respire>::GSWEncoding>,  // fold
         Vec<<Self as Respire>::GSWEncoding>,  // rotate
     );
     type AnswerOne = <Self as Respire>::RLWEEncoding;
+
     type AnswerOneCompressed = <Self as Respire>::VecRLWEEncodingSmallTruncated;
 
     const PACKED_DIM1_SIZE: usize = 2_usize.pow(NU1 as u32);

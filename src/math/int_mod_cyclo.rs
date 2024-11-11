@@ -17,12 +17,17 @@ use std::cmp::max;
 use std::iter;
 use std::ops::{Add, AddAssign, Index, Mul, MulAssign, Neg, Sub, SubAssign};
 
+use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, Bytes};
+
 /// The raw (coefficient) representation of an element of a cyclotomic ring.
 ///
 /// Internally, this is an array of coefficients where the `i`th index corresponds to `x^i`.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[serde_as]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[repr(C, align(32))]
 pub struct IntModCyclo<const D: usize, const N: u64> {
+    #[serde_as(as = "[_; D]")]
     pub coeff: [IntMod<N>; D],
 }
 

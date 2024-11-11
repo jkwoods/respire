@@ -7,6 +7,8 @@ use std::cmp::max;
 use std::mem::ManuallyDrop;
 use std::ops::{Add, AddAssign, Index, IndexMut, Mul, Neg, Sub, SubAssign};
 
+use serde::{Deserialize, Serialize};
+
 // TODO
 // * Implement as an array instead of as a `Vec`. The main sticking point is that to move a matrix
 // as an array to the heap, we are forced to copy (or use unsafe).
@@ -17,7 +19,7 @@ use std::ops::{Add, AddAssign, Index, IndexMut, Mul, Neg, Sub, SubAssign};
 ///
 /// Technically, `Matrix` could in itself be `RingElement`. But so far there has not been a need
 /// for this, so it is not implemented.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[repr(transparent)]
 pub struct Matrix<const N: usize, const M: usize, R: RingElement>
 where
