@@ -194,8 +194,8 @@ pub fn run_pir<ThePIR: PIR, I: Iterator<Item = usize>>(iter: I) -> RunResult {
 
     let mut init_times = Stats::new();
     let begin = Instant::now();
-    let (db, db_hint) = ThePIR::encode_db(records_generator, Some(&mut init_times));
-    let (qk, pp) = ThePIR::setup(Some(&mut init_times));
+    let (db, db_hint) = ThePIR::encode_db(records_generator); //, Some(&mut init_times));
+    let (qk, pp) = ThePIR::setup(); //Some(&mut init_times));
     let end = Instant::now();
 
     init_times.add(
@@ -221,9 +221,9 @@ pub fn run_pir<ThePIR: PIR, I: Iterator<Item = usize>>(iter: I) -> RunResult {
         let mut trial_times = Stats::new();
 
         let begin = Instant::now();
-        let (q, st) = ThePIR::query(&qk, indices, &db_hint, Some(&mut trial_times));
-        let response = ThePIR::answer(&pp, &db, &q, Some(&qk), Some(&mut trial_times));
-        let extracted = ThePIR::extract(&qk, &response, &st, Some(&mut trial_times));
+        let (q, st) = ThePIR::query(&qk, indices, &db_hint); // Some(&mut trial_times));
+        let response = ThePIR::answer(&pp, &db, &q, Some(&qk)); // Some(&mut trial_times));
+        let extracted = ThePIR::extract(&qk, &response, &st); // Some(&mut trial_times));
         let end = Instant::now();
 
         trial_times.add(
@@ -425,7 +425,7 @@ mod test {
 
     #[test]
     fn test_post_process_only() {
-        let (qk, pp) = RespireTest::setup(None);
+        let (qk, pp) = RespireTest::setup(); //None);
         let (_, s_vec, _) = &qk;
         let mut m = <RespireTest as Respire>::RecordPackedSmall::zero();
         for i in 0..RESPIRE_TEST_PARAMS.N_VEC {

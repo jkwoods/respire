@@ -14,6 +14,7 @@ pub trait RingElement:
     + Clone
     + PartialEq
     + Eq
+    + Sync
     + From<u64>
     + for<'a> AddAssign<&'a Self>
     + for<'a> SubAssign<&'a Self>
@@ -38,6 +39,7 @@ where
 pub trait RingElementRef<Owned: RingElement>:
     Sized
     + Clone
+    + Sync
     + Add<Self, Output = Owned>
     + Sub<Self, Output = Owned>
     + Mul<Self, Output = Owned>

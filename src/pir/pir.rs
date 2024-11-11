@@ -42,11 +42,11 @@ impl<T: AddAssign<T> + Copy + Default> Stats<T> {
 
 pub trait PIR {
     // Associated types
-    type QueryKey;
-    type PublicParams;
+    type QueryKey: Sync;
+    type PublicParams: Sync;
     type Query;
     type Response;
-    type Database;
+    type Database: Sync;
     type DatabaseHint;
     type State;
 
@@ -60,26 +60,26 @@ pub trait PIR {
 
     fn encode_db<F: Fn(usize) -> Self::RecordBytes>(
         records_generator: F,
-        time_stats: Option<&mut Stats<Duration>>,
+        //time_stats: Option<&mut Stats<Duration>>,
     ) -> (Self::Database, Self::DatabaseHint);
-    fn setup(time_stats: Option<&mut Stats<Duration>>) -> (Self::QueryKey, Self::PublicParams);
+    fn setup() -> (Self::QueryKey, Self::PublicParams); //time_stats: Option<&mut Stats<Duration>>) -> (Self::QueryKey, Self::PublicParams);
     fn query(
         qk: &Self::QueryKey,
         idx: &[usize],
         db_hint: &Self::DatabaseHint,
-        time_stats: Option<&mut Stats<Duration>>,
+        //time_stats: Option<&mut Stats<Duration>>,
     ) -> (Self::Query, Self::State);
     fn answer(
         pp: &Self::PublicParams,
         db: &Self::Database,
         q: &Self::Query,
         qk: Option<&Self::QueryKey>,
-        time_stats: Option<&mut Stats<Duration>>,
+        //time_stats: Option<&mut Stats<Duration>>,
     ) -> Self::Response;
     fn extract(
         qk: &Self::QueryKey,
         r: &Self::Response,
         st: &Self::State,
-        time_stats: Option<&mut Stats<Duration>>,
+        //time_stats: Option<&mut Stats<Duration>>,
     ) -> Vec<Self::RecordBytes>;
 }
