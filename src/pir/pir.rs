@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::ops::AddAssign;
 use std::time::Duration;
@@ -44,8 +45,8 @@ pub trait PIR {
     // Associated types
     type QueryKey: Sync;
     type PublicParams: Sync;
-    type Query;
-    type Response;
+    type Query: Serialize + for<'de> Deserialize<'de>;
+    type Response: Serialize + for<'de> Deserialize<'de>;
     type Database: Sync;
     type DatabaseHint;
     type State;

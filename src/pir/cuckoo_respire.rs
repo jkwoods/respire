@@ -4,6 +4,8 @@ use itertools::Itertools;
 use log::{info, warn};
 use rand::{thread_rng, Rng};
 use rayon::prelude::*;
+use serde::ser::SerializeSeq;
+use serde::{Serialize, Serializer};
 use std::collections::hash_map::DefaultHasher;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
@@ -45,7 +47,9 @@ impl<
 {
     type QueryKey = BaseRespire::QueryKey;
     type PublicParams = BaseRespire::PublicParams;
+
     type Query = Vec<BaseRespire::QueryOne>;
+
     type Response = Vec<BaseRespire::AnswerOneCompressed>;
     type Database = Vec<<BaseRespire as PIR>::Database>;
     type DatabaseHint = Vec<Vec<Option<usize>>>;

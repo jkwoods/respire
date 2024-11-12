@@ -28,7 +28,7 @@ use crate::math::simd_utils::*;
 use crate::pir::pir::{PIRRecordBytes, Stats, PIR};
 
 use rayon::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize, Serializer};
 
 pub struct RespireImpl<
     const Q1: u64,
@@ -404,10 +404,10 @@ pub trait Respire: PIR {
     type RecordPackedSmall;
     // Packed records from a single response, before compression
     type RecordPacked;
-    type QueryOne: Sync;
+    type QueryOne: Sync + Serialize + for<'de> Deserialize<'de>;
     type QueryOneExpanded;
     type AnswerOne: Send;
-    type AnswerOneCompressed;
+    type AnswerOneCompressed: Serialize + for<'de> Deserialize<'de>;
 
     // Constants
     const PACKED_DIM1_SIZE: usize;
