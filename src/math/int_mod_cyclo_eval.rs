@@ -14,6 +14,9 @@ use crate::math::utils::reverse_bits_fast;
 use rand::Rng;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
+use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, Bytes};
+
 // TODO
 // We need a way to bind a root of the right order to the type.
 // Options (there's probably more): compute on the fly w.r.t the type, or add it as a type parameter.
@@ -23,9 +26,11 @@ use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 /// Internally, this is an array of evaluations, where the `i`th index corresponds to `f(w^{2*bit_reverse(i)+1})`.
 /// `w` here is the `2*D`th root of unity. However, implementations should not rely on the ordering
 /// of `evals`.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[serde_as]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[repr(C, align(32))]
 pub struct IntModCycloEval<const D: usize, const N: u64> {
+    #[serde_as(as = "[_; D]")]
     pub evals: [IntMod<N>; D],
 }
 
