@@ -11,9 +11,10 @@ use crate::math::ring_elem::*;
 use rand::Rng;
 use std::ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
+use serde::{Deserialize, Serialize};
 // TODO: documentation
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[repr(C, align(32))]
 pub struct IntModCycloCRTEval<const D: usize, const N1: u64, const N2: u64> {
     pub proj1: IntModCycloEval<D, N1>,
